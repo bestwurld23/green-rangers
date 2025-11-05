@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Users, Upload, FileText, Target, Phone, Mail, MapPin, Briefcase } from 'lucide-react';
+import { Users, Upload, FileText, Target, Phone, Mail, Briefcase } from 'lucide-react';
 
 export default function JoinTeam() {
   const [formData, setFormData] = useState({
@@ -89,7 +89,7 @@ export default function JoinTeam() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="font-bold">✓</span>
-                  <span>Flexible scheduling - work when you're available</span>
+                  <span>Flexible scheduling - work when you&apos;re available</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="font-bold">✓</span>
@@ -119,7 +119,7 @@ export default function JoinTeam() {
                 <div className="text-green-600 text-6xl mb-4">✓</div>
                 <h3 className="text-2xl font-bold text-green-800 mb-2">Application Submitted!</h3>
                 <p className="text-gray-700 mb-4">
-                  Thank you for your interest in joining our team. We'll review your application and contact you within 2-3 business days.
+                  Thank you for your interest in joining our team. We&apos;ll review your application and contact you within 2-3 business days.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Users, Calendar, DollarSign } from 'lucide-react';
+import { Phone, Mail, MapPin, Users, DollarSign } from 'lucide-react';
 
 export default function CrewService() {
   const [formData, setFormData] = useState({
@@ -89,7 +89,7 @@ export default function CrewService() {
                 <div className="text-green-600 text-5xl mb-4">✓</div>
                 <h3 className="text-xl font-bold text-green-800 mb-2">Request Submitted!</h3>
                 <p className="text-gray-700 mb-4">
-                  We'll contact you shortly to confirm your crew request.
+                  We&apos;ll contact you shortly to confirm your crew request.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}

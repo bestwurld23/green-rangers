@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import type { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const MapContainer = dynamic(
@@ -56,15 +57,14 @@ export default function JobMap({
   fullScreen = false
 }: JobMapProps) {
   const [mounted, setMounted] = useState(false);
-  const [greenIcon, setGreenIcon] = useState<any>(null);
+  const [greenIcon, setGreenIcon] = useState<Icon | null>(null);
 
   useEffect(() => {
     setMounted(true);
 
-    // Custom green marker icon
-    const L = require('leaflet');
-
-    const customGreenIcon = new L.Icon({
+    // Import Leaflet only on client side
+    import('leaflet').then((L) => {
+      const customGreenIcon = new L.Icon({
       iconUrl: 'data:image/svg+xml;base64,' + btoa(`
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="36" height="36">
           <path fill="#22c55e" stroke="#16a34a" stroke-width="1.5" d="M12 0C7.802 0 4 3.403 4 7.602C4 11.8 7.469 16.812 12 24C16.531 16.812 20 11.8 20 7.602C20 3.403 16.199 0 12 0z"/>
@@ -74,9 +74,10 @@ export default function JobMap({
       iconSize: [36, 36],
       iconAnchor: [18, 36],
       popupAnchor: [0, -36],
-    });
+      });
 
-    setGreenIcon(customGreenIcon);
+      setGreenIcon(customGreenIcon);
+    });
   }, []);
 
   if (!mounted) {
@@ -108,7 +109,7 @@ export default function JobMap({
         <ZoomControl position="bottomleft" />
 
         {jobs.map((job) => {
-          if (!job.latitude || !job.longitude) return null;
+          if (!job.latitude || !job.longitude || !greenIcon) return null;
 
           return (
             <Marker
