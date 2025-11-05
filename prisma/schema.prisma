@@ -156,3 +156,81 @@ model SavedJob {
   @@unique([userId, jobId])
   @@map("saved_jobs")
 }
+
+model CrewRequest {
+  id            String   @id @default(cuid())
+
+  name          String
+  email         String
+  phone         String
+  company       String?
+
+  location      String
+  projectDate   DateTime
+  crewSize      Int
+  projectType   String
+  description   String?  @db.Text
+
+  status        CrewRequestStatus @default(PENDING)
+  estimatedCost Int
+
+  notes         String?  @db.Text
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([projectDate])
+  @@index([status])
+  @@map("crew_requests")
+}
+
+enum CrewRequestStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model LaborerApplication {
+  id                   String   @id @default(cuid())
+
+  name                 String
+  email                String
+  phone                String
+  location             String
+
+  experience           String   @db.Text
+  credentials          String?  @db.Text
+  vision               String   @db.Text
+  availability         String
+
+  resumeUrl            String?
+
+  reference1Name       String
+  reference1Phone      String
+  reference1Relationship String
+
+  reference2Name       String
+  reference2Phone      String
+  reference2Relationship String
+
+  status               LaborerApplicationStatus @default(PENDING)
+  notes                String?  @db.Text
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([status])
+  @@index([email])
+  @@map("laborer_applications")
+}
+
+enum LaborerApplicationStatus {
+  PENDING
+  REVIEWING
+  INTERVIEWED
+  APPROVED
+  REJECTED
+  HIRED
+}
