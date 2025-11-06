@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Badge/Shield background -->
+  <path d="M 50 5 L 85 20 L 85 50 Q 85 75, 50 95 Q 15 75, 15 50 L 15 20 Z"
+        fill="#22c55e"
+        stroke="#16a34a"
+        stroke-width="3"/>
+
+  <!-- Inner badge detail -->
+  <path d="M 50 10 L 80 23 L 80 50 Q 80 72, 50 88 Q 20 72, 20 50 L 20 23 Z"
+        fill="#15803d"
+        opacity="0.3"/>
+
+  <!-- Capital G -->
+  <text x="50" y="70"
+        font-family="Arial, sans-serif"
+        font-size="60"
+        font-weight="bold"
+        fill="#ffffff"
+        text-anchor="middle"
+        dominant-baseline="middle">G</text>
+</svg>

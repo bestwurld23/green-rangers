@@ -60,28 +60,28 @@ export default function Home() {
 
       {/* Header - z-50 */}
       <header className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pointer-events-none">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 py-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-2">
             <div>
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-lg sm:text-2xl font-bold text-white">
                 Green Rangers
               </h1>
-              <p className="text-green-400 text-sm">
+              <p className="text-green-400 text-xs sm:text-sm hidden sm:block">
                 Illinois Solar & Renewable Energy Jobs
               </p>
             </div>
-            <div className="flex gap-3 pointer-events-auto">
+            <div className="flex flex-col sm:flex-row gap-2 pointer-events-auto">
               <Link
                 href="/join-team"
-                className="px-4 py-2 border border-green-400 text-green-400 rounded-lg hover:bg-green-400/10 transition font-semibold text-sm"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 border border-green-400 text-green-400 rounded-lg hover:bg-green-400/10 transition font-semibold text-xs sm:text-sm whitespace-nowrap"
               >
-                Join Our Team
+                Join Team
               </Link>
               <Link
                 href="/crew-service"
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold text-sm shadow-lg"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold text-xs sm:text-sm shadow-lg whitespace-nowrap"
               >
-                Need a Crew? $120/day
+                Hire Crew
               </Link>
             </div>
           </div>
@@ -89,16 +89,17 @@ export default function Home() {
       </header>
 
       {/* Top Center Banner - z-40 */}
-      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-40 bg-green-600/95 backdrop-blur-sm rounded-full shadow-lg px-6 py-2">
-        <p className="text-white text-sm font-semibold flex items-center gap-2">
+      <div className="absolute top-16 sm:top-20 left-1/2 transform -translate-x-1/2 z-40 bg-green-600/95 backdrop-blur-sm rounded-full shadow-lg px-4 sm:px-6 py-1.5 sm:py-2 max-w-[90vw]">
+        <p className="text-white text-xs sm:text-sm font-semibold flex items-center gap-2">
           <span className="animate-pulse">🟢</span>
-          Showing {filteredJobs.length} renewable energy jobs in Illinois
+          <span className="hidden sm:inline">Showing {filteredJobs.length} renewable energy jobs in Illinois</span>
+          <span className="sm:hidden">{filteredJobs.length} jobs</span>
         </p>
       </div>
 
-      {/* Stats Panel - Top Right - z-40 */}
+      {/* Stats Panel - Top Right - z-40 - Hidden on mobile */}
       {showStats && (
-        <div className="absolute top-20 right-4 z-40 bg-gray-900/95 backdrop-blur-sm rounded-lg shadow-2xl border border-gray-700 p-4 w-64">
+        <div className="hidden sm:block absolute top-20 right-4 z-40 bg-gray-900/95 backdrop-blur-sm rounded-lg shadow-2xl border border-gray-700 p-4 w-64">
           <button
             onClick={() => setShowStats(false)}
             className="absolute top-2 right-2 text-gray-400 hover:text-white"
@@ -135,82 +136,82 @@ export default function Home() {
       {!showStats && (
         <button
           onClick={() => setShowStats(true)}
-          className="absolute top-20 right-4 z-40 bg-gray-900/95 backdrop-blur-sm rounded-lg shadow-2xl border border-gray-700 p-3 hover:bg-gray-800 transition"
+          className="hidden sm:block absolute top-20 right-4 z-40 bg-gray-900/95 backdrop-blur-sm rounded-lg shadow-2xl border border-gray-700 p-3 hover:bg-gray-800 transition"
         >
           <Briefcase className="w-5 h-5 text-green-500" />
         </button>
       )}
 
-      {/* Filter Panel - Bottom Left - z-40 */}
-      <div className="absolute bottom-6 left-20 z-40 bg-white rounded-lg shadow-2xl p-4 w-64">
-        <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-          <MapPin className="w-5 h-5 text-green-600" />
+      {/* Filter Panel - Bottom Left - z-40 - Smaller on mobile */}
+      <div className="absolute bottom-20 sm:bottom-6 left-3 sm:left-20 z-40 bg-white rounded-lg shadow-2xl p-3 sm:p-4 w-48 sm:w-64">
+        <h3 className="font-bold text-gray-800 mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
           Job Types
         </h3>
-        <div className="space-y-2">
+        <div className="space-y-1.5 sm:space-y-2">
           <button
             onClick={() => setFilter('all')}
-            className={`w-full px-4 py-2 rounded-lg transition text-left flex items-center gap-2 ${
+            className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-left flex items-center gap-2 text-sm sm:text-base ${
               filter === 'all'
                 ? 'bg-green-600 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            <span className={`w-3 h-3 rounded-full ${filter === 'all' ? 'bg-white' : 'bg-green-500'}`}></span>
-            <span className="font-medium">All Jobs ({jobs.length})</span>
+            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${filter === 'all' ? 'bg-white' : 'bg-green-500'}`}></span>
+            <span className="font-medium">All ({jobs.length})</span>
           </button>
           <button
             onClick={() => setFilter('full-time')}
-            className={`w-full px-4 py-2 rounded-lg transition text-left flex items-center gap-2 ${
+            className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-left flex items-center gap-2 text-sm sm:text-base ${
               filter === 'full-time'
                 ? 'bg-green-600 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            <span className={`w-3 h-3 rounded-full ${filter === 'full-time' ? 'bg-white' : 'bg-green-500'}`}></span>
+            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${filter === 'full-time' ? 'bg-white' : 'bg-green-500'}`}></span>
             <span className="font-medium">Full-time</span>
           </button>
           <button
             onClick={() => setFilter('part-time')}
-            className={`w-full px-4 py-2 rounded-lg transition text-left flex items-center gap-2 ${
+            className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-left flex items-center gap-2 text-sm sm:text-base ${
               filter === 'part-time'
                 ? 'bg-yellow-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            <span className={`w-3 h-3 rounded-full ${filter === 'part-time' ? 'bg-white' : 'bg-yellow-500'}`}></span>
+            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${filter === 'part-time' ? 'bg-white' : 'bg-yellow-500'}`}></span>
             <span className="font-medium">Part-time</span>
           </button>
           <button
             onClick={() => setFilter('contract')}
-            className={`w-full px-4 py-2 rounded-lg transition text-left flex items-center gap-2 ${
+            className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-left flex items-center gap-2 text-sm sm:text-base ${
               filter === 'contract'
                 ? 'bg-blue-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            <span className={`w-3 h-3 rounded-full ${filter === 'contract' ? 'bg-white' : 'bg-blue-500'}`}></span>
+            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${filter === 'contract' ? 'bg-white' : 'bg-blue-500'}`}></span>
             <span className="font-medium">Contract</span>
           </button>
         </div>
       </div>
 
-      {/* Crew CTA - Bottom Right - z-40 */}
+      {/* Crew CTA - Bottom Right - z-40 - Smaller on mobile */}
       <Link
         href="/crew-service"
-        className="absolute bottom-6 right-6 z-40 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg shadow-2xl p-6 hover:from-green-700 hover:to-green-800 transition group w-72"
+        className="absolute bottom-3 sm:bottom-6 right-3 sm:right-6 z-40 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg shadow-2xl p-4 sm:p-6 hover:from-green-700 hover:to-green-800 transition group w-52 sm:w-72"
       >
-        <div className="flex items-start gap-4">
-          <div className="bg-white/20 rounded-lg p-3 group-hover:bg-white/30 transition">
-            <DollarSign className="w-8 h-8" />
+        <div className="flex items-start gap-3 sm:gap-4">
+          <div className="bg-white/20 rounded-lg p-2 sm:p-3 group-hover:bg-white/30 transition">
+            <DollarSign className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-1">Need Workers?</h3>
-            <p className="text-sm text-green-100 mb-2">
-              Hire our certified crew
+            <h3 className="font-bold text-base sm:text-lg mb-0.5 sm:mb-1">Need Workers?</h3>
+            <p className="text-xs sm:text-sm text-green-100 mb-1 sm:mb-2">
+              Hire certified crew
             </p>
-            <div className="text-2xl font-bold">$120/day</div>
-            <p className="text-xs text-green-200 mt-1">per person • same-day available</p>
+            <div className="text-xl sm:text-2xl font-bold">$120/day</div>
+            <p className="text-xs text-green-200 mt-0.5 sm:mt-1">per person</p>
           </div>
         </div>
       </Link>
