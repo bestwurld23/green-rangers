@@ -5,6 +5,7 @@ import JobMap, { Job } from '@/components/map/JobMap';
 import { loadJobsFromCSV, getSampleJobs } from '@/lib/jobs';
 import Link from 'next/link';
 import { Briefcase, DollarSign, MapPin, X, Menu } from 'lucide-react';
+import ApplicationModal from '@/components/apply/ApplicationModal';
 
 export default function JobBoard() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -13,6 +14,7 @@ export default function JobBoard() {
   const [showStats, setShowStats] = useState(true);
   const [showFilters, setShowFilters] = useState(true);
   const [showCTA, setShowCTA] = useState(true);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   useEffect(() => {
     async function fetchJobs() {
@@ -54,7 +56,11 @@ export default function JobBoard() {
             </div>
           </div>
         ) : (
-          <JobMap jobs={filteredJobs} fullScreen={true} />
+          <JobMap
+            jobs={filteredJobs}
+            fullScreen={true}
+            onApply={(job) => setSelectedJob(job)}
+          />
         )}
       </div>
 
@@ -253,6 +259,15 @@ export default function JobBoard() {
         >
           <DollarSign className="w-6 h-6" />
         </button>
+      )}
+
+      {/* Application Modal */}
+      {selectedJob && (
+        <ApplicationModal
+          job={selectedJob}
+          isOpen={!!selectedJob}
+          onClose={() => setSelectedJob(null)}
+        />
       )}
     </div>
   );

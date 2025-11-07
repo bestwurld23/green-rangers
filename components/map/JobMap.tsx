@@ -48,13 +48,15 @@ type JobMapProps = {
   center?: [number, number];
   zoom?: number;
   fullScreen?: boolean;
+  onApply?: (job: Job) => void;
 };
 
 export default function JobMap({
   jobs,
   center = [40.6331, -89.3985],
   zoom = 7,
-  fullScreen = false
+  fullScreen = false,
+  onApply
 }: JobMapProps) {
   const [mounted, setMounted] = useState(false);
   const [greenIcon, setGreenIcon] = useState<Icon | null>(null);
@@ -139,16 +141,26 @@ export default function JobMap({
                   <div className="max-h-32 overflow-y-auto mb-3 text-xs text-gray-700">
                     {job.description.substring(0, 200)}...
                   </div>
-                  {job.postLink && (
-                    <a
-                      href={job.postLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition font-semibold"
-                    >
-                      View Job →
-                    </a>
-                  )}
+                  <div className="flex gap-2">
+                    {onApply && (
+                      <button
+                        onClick={() => onApply(job)}
+                        className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition font-semibold"
+                      >
+                        Apply with Green Rangers
+                      </button>
+                    )}
+                    {job.postLink && (
+                      <a
+                        href={job.postLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition font-semibold text-center"
+                      >
+                        View on LinkedIn
+                      </a>
+                    )}
+                  </div>
                 </div>
               </Popup>
             </Marker>
