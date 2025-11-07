@@ -1,220 +1,82 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import JobMap, { Job } from '@/components/map/JobMap';
-import { loadJobsFromCSV, getSampleJobs } from '@/lib/jobs';
 import Link from 'next/link';
-import { Briefcase, DollarSign, MapPin } from 'lucide-react';
+import { Briefcase, Users, MapPin } from 'lucide-react';
 
 export default function Home() {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<string>('all');
-  const [showStats, setShowStats] = useState(true);
-
-  useEffect(() => {
-    async function fetchJobs() {
-      try {
-        const jobData = await loadJobsFromCSV();
-
-        if (jobData.length === 0) {
-          console.log('Using sample data');
-          setJobs(getSampleJobs());
-        } else {
-          setJobs(jobData);
-        }
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-        setJobs(getSampleJobs());
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchJobs();
-  }, []);
-
-  const filteredJobs = filter === 'all'
-    ? jobs
-    : jobs.filter(job => job.employmentType?.toLowerCase().includes(filter.toLowerCase()));
-
-  const jobsWithCoords = filteredJobs.filter(job => job.latitude && job.longitude);
-
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-gray-900">
-      {/* Map Background Layer - z-0 */}
-      <div className="absolute inset-0 z-0">
-        {loading ? (
-          <div className="h-full w-full bg-gray-900 flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
-              <p className="text-gray-400">Loading jobs...</p>
-            </div>
-          </div>
-        ) : (
-          <JobMap jobs={filteredJobs} fullScreen={true} />
-        )}
-      </div>
-
-      {/* Overlay UI Elements */}
-
-      {/* Header - z-50 */}
-      <header className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 to-transparent pointer-events-none">
-        <div className="max-w-7xl mx-auto px-3 py-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-2">
-            <div>
-              <h1 className="text-lg sm:text-2xl font-bold text-white">
-                Green Rangers
-              </h1>
-              <p className="text-green-400 text-xs sm:text-sm hidden sm:block">
-                Illinois Solar & Renewable Energy Jobs
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-2 pointer-events-auto">
-              <Link
-                href="/join-team"
-                className="px-3 py-1.5 sm:px-4 sm:py-2 border border-green-400 text-green-400 rounded-lg hover:bg-green-400/10 transition font-semibold text-xs sm:text-sm whitespace-nowrap"
-              >
-                Join Team
-              </Link>
-              <Link
-                href="/crew-service"
-                className="px-3 py-1.5 sm:px-4 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold text-xs sm:text-sm shadow-lg whitespace-nowrap"
-              >
-                Hire Crew
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Top Center Banner - z-40 */}
-      <div className="absolute top-16 sm:top-20 left-1/2 transform -translate-x-1/2 z-40 bg-green-600/95 backdrop-blur-sm rounded-full shadow-lg px-4 sm:px-6 py-1.5 sm:py-2 max-w-[90vw]">
-        <p className="text-white text-xs sm:text-sm font-semibold flex items-center gap-2">
-          <span className="animate-pulse">🟢</span>
-          <span className="hidden sm:inline">Showing {filteredJobs.length} renewable energy jobs in Illinois</span>
-          <span className="sm:hidden">{filteredJobs.length} jobs</span>
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
+      {/* Header */}
+      <div className="text-center mb-12 sm:mb-16">
+        <h1 className="text-4xl sm:text-6xl font-bold text-white mb-3">
+          Green Rangers
+        </h1>
+        <p className="text-green-400 text-lg sm:text-xl">
+          Illinois Renewable Energy Workforce
         </p>
       </div>
 
-      {/* Stats Panel - Top Right - z-40 - Hidden on mobile */}
-      {showStats && (
-        <div className="hidden sm:block absolute top-20 right-4 z-40 bg-gray-900/95 backdrop-blur-sm rounded-lg shadow-2xl border border-gray-700 p-4 w-64">
-          <button
-            onClick={() => setShowStats(false)}
-            className="absolute top-2 right-2 text-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
-          <h3 className="text-white font-bold mb-3 flex items-center gap-2">
-            <Briefcase className="w-5 h-5 text-green-500" />
-            Job Stats
-          </h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400 text-sm">Total Jobs</span>
-              <span className="text-green-500 font-bold text-lg">{jobs.length}</span>
+      {/* Three Main Options */}
+      <div className="w-full max-w-2xl space-y-4 sm:space-y-6">
+        {/* Job Board Button */}
+        <Link
+          href="/job-board"
+          className="block w-full bg-green-600 hover:bg-green-700 text-white rounded-2xl p-8 sm:p-10 transition-all duration-300 transform hover:scale-105 shadow-2xl group"
+        >
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="bg-white/20 rounded-xl p-4 group-hover:bg-white/30 transition">
+              <MapPin className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400 text-sm">On Map</span>
-              <span className="text-blue-400 font-bold text-lg">{jobsWithCoords.length}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400 text-sm">Companies</span>
-              <span className="text-purple-400 font-bold text-lg">
-                {new Set(jobs.map(j => j.company)).size}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400 text-sm">Filtered</span>
-              <span className="text-yellow-400 font-bold text-lg">{filteredJobs.length}</span>
+            <div className="text-left">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">Job Board</h2>
+              <p className="text-green-100 text-sm sm:text-base">
+                Explore 100+ renewable energy jobs across Illinois
+              </p>
             </div>
           </div>
-        </div>
-      )}
+        </Link>
 
-      {!showStats && (
-        <button
-          onClick={() => setShowStats(true)}
-          className="hidden sm:block absolute top-20 right-4 z-40 bg-gray-900/95 backdrop-blur-sm rounded-lg shadow-2xl border border-gray-700 p-3 hover:bg-gray-800 transition"
+        {/* Join Our Team Button */}
+        <Link
+          href="/join-team"
+          className="block w-full bg-green-600 hover:bg-green-700 text-white rounded-2xl p-8 sm:p-10 transition-all duration-300 transform hover:scale-105 shadow-2xl group"
         >
-          <Briefcase className="w-5 h-5 text-green-500" />
-        </button>
-      )}
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="bg-white/20 rounded-xl p-4 group-hover:bg-white/30 transition">
+              <Users className="w-8 h-8 sm:w-10 sm:h-10" />
+            </div>
+            <div className="text-left">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">Join Our Team</h2>
+              <p className="text-green-100 text-sm sm:text-base">
+                Apply to work with certified green energy crews
+              </p>
+            </div>
+          </div>
+        </Link>
 
-      {/* Filter Panel - Bottom Left - z-40 - Smaller on mobile */}
-      <div className="absolute bottom-20 sm:bottom-6 left-3 sm:left-20 z-40 bg-white rounded-lg shadow-2xl p-3 sm:p-4 w-48 sm:w-64">
-        <h3 className="font-bold text-gray-800 mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
-          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-          Job Types
-        </h3>
-        <div className="space-y-1.5 sm:space-y-2">
-          <button
-            onClick={() => setFilter('all')}
-            className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-left flex items-center gap-2 text-sm sm:text-base ${
-              filter === 'all'
-                ? 'bg-green-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${filter === 'all' ? 'bg-white' : 'bg-green-500'}`}></span>
-            <span className="font-medium">All ({jobs.length})</span>
-          </button>
-          <button
-            onClick={() => setFilter('full-time')}
-            className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-left flex items-center gap-2 text-sm sm:text-base ${
-              filter === 'full-time'
-                ? 'bg-green-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${filter === 'full-time' ? 'bg-white' : 'bg-green-500'}`}></span>
-            <span className="font-medium">Full-time</span>
-          </button>
-          <button
-            onClick={() => setFilter('part-time')}
-            className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-left flex items-center gap-2 text-sm sm:text-base ${
-              filter === 'part-time'
-                ? 'bg-yellow-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${filter === 'part-time' ? 'bg-white' : 'bg-yellow-500'}`}></span>
-            <span className="font-medium">Part-time</span>
-          </button>
-          <button
-            onClick={() => setFilter('contract')}
-            className={`w-full px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition text-left flex items-center gap-2 text-sm sm:text-base ${
-              filter === 'contract'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${filter === 'contract' ? 'bg-white' : 'bg-blue-500'}`}></span>
-            <span className="font-medium">Contract</span>
-          </button>
-        </div>
+        {/* Hire Our Crew Button */}
+        <Link
+          href="/crew-service"
+          className="block w-full bg-green-600 hover:bg-green-700 text-white rounded-2xl p-8 sm:p-10 transition-all duration-300 transform hover:scale-105 shadow-2xl group"
+        >
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="bg-white/20 rounded-xl p-4 group-hover:bg-white/30 transition">
+              <Briefcase className="w-8 h-8 sm:w-10 sm:h-10" />
+            </div>
+            <div className="text-left">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">Hire Our Crew</h2>
+              <p className="text-green-100 text-sm sm:text-base">
+                Get certified day labor at $120/day per person
+              </p>
+            </div>
+          </div>
+        </Link>
       </div>
 
-      {/* Crew CTA - Bottom Right - z-40 - Smaller on mobile */}
-      <Link
-        href="/crew-service"
-        className="absolute bottom-3 sm:bottom-6 right-3 sm:right-6 z-40 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg shadow-2xl p-4 sm:p-6 hover:from-green-700 hover:to-green-800 transition group w-52 sm:w-72"
-      >
-        <div className="flex items-start gap-3 sm:gap-4">
-          <div className="bg-white/20 rounded-lg p-2 sm:p-3 group-hover:bg-white/30 transition">
-            <DollarSign className="w-6 h-6 sm:w-8 sm:h-8" />
-          </div>
-          <div>
-            <h3 className="font-bold text-base sm:text-lg mb-0.5 sm:mb-1">Need Workers?</h3>
-            <p className="text-xs sm:text-sm text-green-100 mb-1 sm:mb-2">
-              Hire certified crew
-            </p>
-            <div className="text-xl sm:text-2xl font-bold">$120/day</div>
-            <p className="text-xs text-green-200 mt-0.5 sm:mt-1">per person</p>
-          </div>
-        </div>
-      </Link>
+      {/* Footer */}
+      <footer className="mt-16 text-center">
+        <p className="text-gray-500 text-sm">
+          NABCEP, NCCER, and OSHA Certified Professionals
+        </p>
+      </footer>
     </div>
   );
 }
