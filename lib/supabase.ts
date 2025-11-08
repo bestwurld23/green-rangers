@@ -57,3 +57,54 @@ export type CrewRequest = {
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
   notes: string | null;
 };
+
+// Portfolio System Types
+export type Portfolio = {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  worker_email: string;
+  is_public: boolean;
+  profile_photo_url: string | null;
+  bio: string | null;
+  title: string | null;
+  location: string | null;
+  availability: string | null;
+  instagram_handle: string | null;
+  instagram_connected: boolean;
+  linkedin_url: string | null;
+  total_projects: number;
+  profile_views: number;
+};
+
+export type PortfolioProject = {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  portfolio_id: string;
+  title: string;
+  company: string | null;
+  location: string | null;
+  project_date: string | null;
+  description: string | null;
+  skills: string[]; // JSON array of skills
+  display_order: number;
+  is_featured: boolean;
+};
+
+export type ProjectPhoto = {
+  id: string;
+  created_at: string;
+  project_id: string;
+  photo_url: string;
+  caption: string | null;
+  display_order: number;
+  is_hero: boolean;
+};
+
+// Helper type: Portfolio with projects and photos
+export type PortfolioWithProjects = Portfolio & {
+  projects: (PortfolioProject & {
+    photos: ProjectPhoto[];
+  })[];
+};
